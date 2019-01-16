@@ -1,34 +1,13 @@
-use std::io;
-use std::cmp::Ordering;
-use rand::Rng;
+use std::io; //要获取用户输入输出 需要使用io库
+
 fn main() {
-    println!("Game guess number start!");
+    println!("Guess the number!");
 
-    let secret_num = rand::thread_rng().gen_range(1,101);
+    println!("Please input your guess.");
 
-    loop{
-        println!("Please input your guess.");
+    let mut guess = String::new();  //使用变量存储用户输入 mutable(可变)
 
-        let mut guess = String::new();
-
-        io::stdin().read_line(&mut guess)
-            .expect("Failed to read line");
-
-        let guess: u32 = match guess.trim().parse(){
-            Ok(num) => num,
-            Err(_) => continue,
-        };
-
-        println!("You guessed: {}",guess);
-
-        match guess.cmp(&secret_num){
-            Ordering::Less => println!("Too small!"),
-            Ordering::Greater => println!("Too big!"),
-            Ordering::Equal => {
-                println!("You win!");
-                break;
-            }
-        }
-    }
-
+    io::stdin().read_line(&mut guess)   //调用stdin函数 返回std::io::Stdin实例  若没有use std::io 则std::io::stdin
+        .expect("Failed to read line");
+    println!("You guessed: {}", guess);
 }
