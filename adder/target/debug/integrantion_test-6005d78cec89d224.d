@@ -1,0 +1,1 @@
+C:\Users\Administrator\Desktop\study_rust\adder\target\debug\integrantion_test-6005d78cec89d224.exe: C:\Users\Administrator\Desktop\study_rust\adder\src\lib.rs C:\Users\Administrator\Desktop\study_rust\adder\tests\integrantion_test.rs
