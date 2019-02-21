@@ -1,1 +1,11 @@
-target/
+**/debug
+**/target
+**/*.json
+*/.idea/
+.idea/
+/.vs
+**/*.d
+**/*.exe
+**/*.pdb
+**/*.toml
+**/*.lock
