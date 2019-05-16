@@ -9,6 +9,7 @@ pub struct Config {
 }
 
 impl Config {
+    // 处理命令行参数
     pub fn new(args: &[String]) -> Result<Config, &'static str> {
         if args.len() < 3 {
             return Err("not enough arguments");
