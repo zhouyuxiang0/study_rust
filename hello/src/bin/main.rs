@@ -1,24 +1,25 @@
+extern crate hello;
+use hello::ThreadPool;
+
+use std::io::prelude::*;
+use std::net::TcpListener;
+use std::net::TcpStream;
+use std::fs::File;
 use std::thread;
 use std::time::Duration;
-use std::io::prelude::*;
-use std::net::TcpStream;
-use std::net::TcpListener;
-// use std::fs::File;
-use std::fs;
-// use std::sync::mpsc;
-use hello::ThreadPool;
 
 fn main() {
     let listener = TcpListener::bind("127.0.0.1:7878").unwrap();
     let pool = ThreadPool::new(4);
 
-    for stream in listener.incoming() {
+    for stream in listener.incoming().take(2) {
         let stream = stream.unwrap();
 
-        thread::spawn(|| {
+        pool.execute(|| {
             handle_connection(stream);
         });
     }
+    println!("Shutting down.");
 }
 
 fn handle_connection(mut stream: TcpStream) {
@@ -36,8 +37,10 @@ fn handle_connection(mut stream: TcpStream) {
     } else {
         ("HTTP/1.1 404 NOT FOUND\r\n\r\n", "404.html")
     };
-    let contents = fs::read_to_string("hello.html").unwrap();
-    let response = format!("HTTP/1.1 200 OK\r\n\r\n{}", contents);
+    let mut file = File::open(filename).unwrap();
+    let mut contents = String::new();
+    file.read_to_string(&mut contents).unwrap();
+    let response = format!("{}{}", status_line, contents);
     stream.write(response.as_bytes()).unwrap();
     stream.flush().unwrap();
     // println!("Request: {}", String::from_utf8_lossy(&buffer[..]));
